@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Data Upload</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Hospital Admin</a>
+        <div class="navbar-nav">
+            <a class="nav-link active" href="/">Upload</a>
+            <a class="nav-link" href="/headers">View Headers</a>
+            <a class="nav-link" href="/mapping">Mappings</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h3>Upload Data File</h3>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="specialty" class="form-label">Specialty</label> {# Changed label text #}
+                <select name="specialty" id="specialty" class="form-select" required> {# Changed name and id #}
+                    <option value="">-- Select Specialty --</option>
+                    {% for spec in specializations %} {# Variable name 'specialization' in app.py passes 'specialties' list #}
+                        <option value="{{ spec }}">{{ spec }}</option>
+                    {% endfor %}
+                    <option value="__new__">-- Add New Specialty --</option>
+                </select>
+                <input type="text" name="new_specialty" id="new_specialty" class="form-control mt-2 d-none" placeholder="Enter new department"> {# Changed name and id #}
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Choose CSV/XLS/XLSX File</label>
+                <input type="file" name="file" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const select = document.getElementById('specialty'); // Changed id
+    const newInput = document.getElementById('new_specialty'); // Changed id
+
+    select.addEventListener('change', function () {
+        if (this.value === '__new__') {
+            newInput.classList.remove('d-none');
+            newInput.required = true;
+        } else {
+            newInput.classList.add('d-none');
+            newInput.required = false;
+        }
+    });
+</script>
+
+</body>
+</html>
